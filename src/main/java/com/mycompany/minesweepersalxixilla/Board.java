@@ -33,6 +33,8 @@ public class Board extends javax.swing.JPanel {
     private static MouseAdapter mouseAdapter = null;
     private int currentRow;
     private int currentCol;
+    private int openButtons = 0;
+    private FlagPanelInterface flagPanelInterface;
 
     /**
      * Creates new form Board
@@ -57,9 +59,15 @@ public class Board extends javax.swing.JPanel {
                 }
             }
         };
+        
+    }
+
+    public void setFlagPanelInterface(FlagPanelInterface flagPanelInterface) {
+        this.flagPanelInterface = flagPanelInterface;
     }
 
     public void initBoard() {
+        openButtons = 0;
         currentRow = 0;
         currentCol = 0;
         Dimension panelDimension = new Dimension(MineButton.BUTTON_SIZE, MineButton.BUTTON_SIZE);
@@ -78,6 +86,7 @@ public class Board extends javax.swing.JPanel {
                 panel.setPreferredSize(panelDimension);
                 panel.setLayout(new OverlayLayout(panel));
                 MineButton button = new MineButton(row, col);
+                button.setFlagPanelInterface(flagPanelInterface);
                 buttonMatrix[row][col] = button;
                 panel.add(button);
                 button.addMouseListener(mouseAdapter);
@@ -88,7 +97,7 @@ public class Board extends javax.swing.JPanel {
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setFont(new Font("Oswald", Font.BOLD, 20));
                 panel.add(label);
-                if(matrix[row][col] == -1){
+                if (matrix[row][col] == -1) {
                     panel.setBackground(Color.red);
                 }
                 add(panel);
@@ -211,6 +220,8 @@ public class Board extends javax.swing.JPanel {
             return;
         }
         button.open();
+        openButtons++;
+        youWin();
         if (matrix[row][col] == 0) {
             for (int r = -1; r <= 1; r++) {
                 for (int c = -1; c <= 1; c++) {
@@ -259,6 +270,13 @@ public class Board extends javax.swing.JPanel {
         timer.start();
     }
 
+    public void youWin() {
+        int numCells = ConfigData.getInstance().getNumRows() * ConfigData.getInstance().getNumCols();
+            if(openButtons == (numCells - ConfigData.getInstance().getNumBombs())) {
+                JOptionPane.showMessageDialog(null, "YOUWIN!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+    }
+
     public void deleteMouseAdapter() {
         int numRows = ConfigData.getInstance().getNumRows();
         int numCols = ConfigData.getInstance().getNumCols();
@@ -268,8 +286,6 @@ public class Board extends javax.swing.JPanel {
             }
         }
     }
-
-    
 
     public boolean isValid(int rows, int cols) {
         return rows >= 0 && rows < ConfigData.getInstance().getNumRows()

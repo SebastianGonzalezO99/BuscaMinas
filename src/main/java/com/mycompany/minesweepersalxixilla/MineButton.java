@@ -30,6 +30,7 @@ public class MineButton extends JButton {
     private static Icon iconButtonPressed = null;
     private static MouseAdapter mouseAdapter = null;
 
+    private FlagPanelInterface flagPanelInterface;
 
     public MineButton(int row, int col) {
         super();
@@ -63,12 +64,16 @@ public class MineButton extends JButton {
                     if (e.getButton() == RIGHT_BUTTON) {
                         b.changeState();
                         System.out.println("RIGHT");
-                    } 
+                    }
                 }
             };
         }
         setIcon();
         addMouseListener(mouseAdapter);
+    }
+
+    public void setFlagPanelInterface(FlagPanelInterface flagPanelInterface) {
+        this.flagPanelInterface = flagPanelInterface;
     }
 
     public int getRow() {
@@ -95,9 +100,13 @@ public class MineButton extends JButton {
 
     public void changeState() {
         if (state == ButtonState.CLOSE) {
-            state = ButtonState.FLAG;
+            if (flagPanelInterface.getNumFlags() > 0) {
+                state = ButtonState.FLAG;
+                flagPanelInterface.decrementOne();
+            }
         } else if (state == ButtonState.FLAG) {
             state = ButtonState.QUESTION;
+            flagPanelInterface.addOne();
         } else if (state == ButtonState.QUESTION) {
             state = ButtonState.CLOSE;
         }
@@ -115,11 +124,11 @@ public class MineButton extends JButton {
         this.state = state;
         repaint();
     }
-    
+
     public ButtonState getState() {
         return state;
     }
-    
+
     public void open() {
         state = ButtonState.OPEN;
         setVisible(false);

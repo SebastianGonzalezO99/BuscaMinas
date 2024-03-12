@@ -22,6 +22,7 @@ public class MineSweeper extends javax.swing.JFrame {
      */
     public MineSweeper() {
         initComponents();
+        board.setFlagPanelInterface(flagPanel);
         setLocationRelativeTo(null);
         board.initBoard();
         int numRows = ConfigData.getInstance().getNumRows();
@@ -47,6 +48,7 @@ public class MineSweeper extends javax.swing.JFrame {
         int width = numCols * MineButton.BUTTON_SIZE;
         int height = numRows * MineButton.BUTTON_SIZE;
         board.setLayout(new GridLayout(numRows,numCols));
+        flagPanel.reset();
         board.initBoard();
         board.setPreferredSize(new Dimension(width, height));
         board.validate();
@@ -64,6 +66,7 @@ public class MineSweeper extends javax.swing.JFrame {
     private void initComponents() {
 
         jToolBar1 = new javax.swing.JToolBar();
+        flagPanel = new com.mycompany.minesweepersalxixilla.FlagCounter();
         jComboBox1 = new javax.swing.JComboBox<>();
         smileButton = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -76,6 +79,7 @@ public class MineSweeper extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
+        jToolBar1.add(flagPanel);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Begineer", "Intermediate", "Dificult" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -186,6 +190,7 @@ public class MineSweeper extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.minesweepersalxixilla.Board board;
     private javax.swing.Box.Filler filler1;
+    private com.mycompany.minesweepersalxixilla.FlagCounter flagPanel;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
