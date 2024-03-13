@@ -35,6 +35,8 @@ public class Board extends javax.swing.JPanel {
     private int currentCol;
     private int openButtons = 0;
     private FlagPanelInterface flagPanelInterface;
+    private TimerInterface timerInterface;
+    private boolean firstTime;
 
     /**
      * Creates new form Board
@@ -65,8 +67,13 @@ public class Board extends javax.swing.JPanel {
     public void setFlagPanelInterface(FlagPanelInterface flagPanelInterface) {
         this.flagPanelInterface = flagPanelInterface;
     }
+    
+    public void setTimerInterface(TimerInterface timerInterface) {
+        this.timerInterface = timerInterface;
+    }
 
     public void initBoard() {
+        firstTime = true;
         openButtons = 0;
         currentRow = 0;
         currentCol = 0;
@@ -222,6 +229,11 @@ public class Board extends javax.swing.JPanel {
         button.open();
         openButtons++;
         youWin();
+        if(firstTime) {
+            timerInterface.reset();
+            timerInterface.start();
+            firstTime = false;
+        }
         if (matrix[row][col] == 0) {
             for (int r = -1; r <= 1; r++) {
                 for (int c = -1; c <= 1; c++) {

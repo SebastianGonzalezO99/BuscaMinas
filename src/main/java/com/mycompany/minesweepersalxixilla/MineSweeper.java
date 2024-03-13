@@ -23,20 +23,14 @@ public class MineSweeper extends javax.swing.JFrame {
     public MineSweeper() {
         initComponents();
         board.setFlagPanelInterface(flagPanel);
-        setLocationRelativeTo(null);
-        board.initBoard();
-        int numRows = ConfigData.getInstance().getNumRows();
-        int numCols = ConfigData.getInstance().getNumCols();
-        int width = numCols * MineButton.BUTTON_SIZE;
-        int height = numRows * MineButton.BUTTON_SIZE;
+        board.setTimerInterface(timerText);
+        reset();
         setPlayIcon();
-        board.setPreferredSize(new Dimension(width, height));
-        pack();
     }
 
     private void setPlayIcon() {
         Image image = new ImageIcon(getClass().getResource("/images/smiley.png")).getImage();
-        Image newimg = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+        Image newimg = image.getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
         Icon icon = new ImageIcon(newimg);
         smileButton.setIcon(icon);
     }
@@ -69,7 +63,7 @@ public class MineSweeper extends javax.swing.JFrame {
         flagPanel = new com.mycompany.minesweepersalxixilla.FlagCounter();
         jComboBox1 = new javax.swing.JComboBox<>();
         smileButton = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        timerText = new com.mycompany.minesweepersalxixilla.TimerText();
         jPanel1 = new javax.swing.JPanel();
         board = new com.mycompany.minesweepersalxixilla.Board();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -79,6 +73,9 @@ public class MineSweeper extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
+
+        flagPanel.setMinimumSize(new java.awt.Dimension(100, 40));
+        flagPanel.setPreferredSize(new java.awt.Dimension(95, 40));
         jToolBar1.add(flagPanel);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Begineer", "Intermediate", "Dificult" }));
@@ -97,7 +94,12 @@ public class MineSweeper extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(smileButton);
-        jToolBar1.add(filler1);
+
+        timerText.setBackground(new java.awt.Color(0, 0, 0));
+        timerText.setForeground(new java.awt.Color(204, 0, 0));
+        timerText.setText("00:00");
+        timerText.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        jToolBar1.add(timerText);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -144,11 +146,13 @@ public class MineSweeper extends javax.swing.JFrame {
                 throw new AssertionError();
         }
         reset();
+        timerText.reset();
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void smileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smileButtonActionPerformed
         if (ConfigData.getInstance().getGameOver() != true) {
             reset();
+            timerText.reset();
         }
     }//GEN-LAST:event_smileButtonActionPerformed
 
@@ -189,7 +193,6 @@ public class MineSweeper extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.minesweepersalxixilla.Board board;
-    private javax.swing.Box.Filler filler1;
     private com.mycompany.minesweepersalxixilla.FlagCounter flagPanel;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JMenu jMenu1;
@@ -198,5 +201,6 @@ public class MineSweeper extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton smileButton;
+    private com.mycompany.minesweepersalxixilla.TimerText timerText;
     // End of variables declaration//GEN-END:variables
 }

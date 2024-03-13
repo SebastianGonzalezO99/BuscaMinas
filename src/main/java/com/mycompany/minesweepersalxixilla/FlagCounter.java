@@ -22,47 +22,49 @@ import javax.swing.JTextField;
  * @author alu13114532
  */
 public class FlagCounter extends JPanel implements FlagPanelInterface {
-    
+
     private JTextField textField;
     private int countFlags;
-    
+
     public FlagCounter() {
         setLayout(new FlowLayout());
         Image image = new ImageIcon(getClass().getResource("/images/flag.png")).getImage();
-        Image flagImage = image.getScaledInstance(BUTTON_SIZE, BUTTON_SIZE, java.awt.Image.SCALE_SMOOTH);
+        Image flagImage = image.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
         Icon icon = new ImageIcon(flagImage);
         JLabel labelFlag = new JLabel(icon);
         add(labelFlag);
-        textField = new JTextField("0");
-        reset();
+        countFlags = 0;
+        textField = new JTextField("");
         textField.setEditable(false);
         textField.setFocusable(false);
         textField.setBackground(Color.black);
-        textField.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+        textField.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        reset();
         textField.setForeground(Color.red);
-        textField.setPreferredSize(new Dimension(80, 30));
+        textField.setPreferredSize(new Dimension(50, 30));
+        textField.setHorizontalAlignment(JTextField.CENTER);
         add(textField);
     }
-    
+
     public void addOne() {
         countFlags++;
         textField.setText("" + countFlags);
     }
-    
+
     public void decrementOne() {
         if (countFlags > 0) {
             countFlags--;
             textField.setText("" + countFlags);
         }
     }
-    
-    public void reset(){
+
+    public void reset() {
         countFlags = ConfigData.getInstance().getNumBombs();
-        textField.setText(""+ countFlags);
+        textField.setText("" + countFlags);
     }
-    
-    public int getNumFlags(){
+
+    public int getNumFlags() {
         return countFlags;
     }
-    
+
 }
