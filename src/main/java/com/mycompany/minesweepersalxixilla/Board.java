@@ -73,6 +73,7 @@ public class Board extends javax.swing.JPanel {
     }
 
     public void initBoard() {
+        firstClick = true;
         firstTime = true;
         openButtons = 0;
         currentRow = 0;
@@ -263,6 +264,7 @@ public class Board extends javax.swing.JPanel {
                 if (currentRow < numRows) {
                     if (matrix[currentRow][currentCol] == -1) {
                         buttonMatrix[currentRow][currentCol].open();
+                        timerInterface.stop();
                     }
 
                     currentCol++;
@@ -285,7 +287,8 @@ public class Board extends javax.swing.JPanel {
     public void youWin() {
         int numCells = ConfigData.getInstance().getNumRows() * ConfigData.getInstance().getNumCols();
             if(openButtons == (numCells - ConfigData.getInstance().getNumBombs())) {
-                JOptionPane.showMessageDialog(null, "YOUWIN!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                timerInterface.stop();
+                JOptionPane.showMessageDialog(null, "YOUWIN!!!", "Winner", JOptionPane.YES_OPTION);
             }
     }
 
