@@ -73,7 +73,6 @@ public class Board extends javax.swing.JPanel {
     }
 
     public void initBoard() {
-        firstClick = true;
         firstTime = true;
         openButtons = 0;
         currentRow = 0;
